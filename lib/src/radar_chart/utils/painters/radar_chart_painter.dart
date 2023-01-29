@@ -13,11 +13,10 @@ import 'package:multi_charts/src/radar_chart/utils/radar_chart_draw_utils.dart';
 /// animation of the chart data and outlines.
 class RadarChartPainter extends CustomPainter {
   final List<double> values;
-  final List<String>? labels;
+  final List<Text>? labels;
   final double maxValue;
   final Color fillColor;
   final Color strokeColor;
-  final Color labelColor;
   final double textScaleFactor;
   final double? labelWidth;
   final int? maxLinesForLabels;
@@ -26,18 +25,18 @@ class RadarChartPainter extends CustomPainter {
   final double chartRadiusFactor;
 
   RadarChartPainter(
-      this.values,
-      this.labels,
-      this.maxValue,
-      this.fillColor,
-      this.strokeColor,
-      this.labelColor,
-      this.textScaleFactor,
-      this.labelWidth,
-      this.maxLinesForLabels,
-      this.dataAnimationPercent,
-      this.outlineAnimationPercent,
-      this.chartRadiusFactor);
+    this.values,
+    this.labels,
+    this.maxValue,
+    this.fillColor,
+    this.strokeColor,
+    this.textScaleFactor,
+    this.labelWidth,
+    this.maxLinesForLabels,
+    this.dataAnimationPercent,
+    this.outlineAnimationPercent,
+    this.chartRadiusFactor,
+  );
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -45,8 +44,7 @@ class RadarChartPainter extends CustomPainter {
     double angle = (2 * pi) / values.length;
     var valuePoints = <Offset>[];
     for (var i = 0; i < values.length; i++) {
-      var radius = (values[i] / maxValue) *
-          (min(center.dx, center.dy) * chartRadiusFactor);
+      var radius = (values[i] / maxValue) * (min(center.dx, center.dy) * chartRadiusFactor);
       var x = dataAnimationPercent * radius * cos(angle * i - pi / 2);
       var y = dataAnimationPercent * radius * sin(angle * i - pi / 2);
 
@@ -54,25 +52,33 @@ class RadarChartPainter extends CustomPainter {
     }
 
     var outerPoints = RadarChartDrawUtils.drawChartOutline(
-        canvas,
-        center,
-        angle,
-        strokeColor,
-        maxValue,
-        values.length,
-        outlineAnimationPercent,
-        (min(center.dx, center.dy) * chartRadiusFactor));
-    RadarChartDrawUtils.drawGraphData(canvas, valuePoints, fillColor, strokeColor);
+      canvas,
+      center,
+      angle,
+      strokeColor,
+      maxValue,
+      values.length,
+      outlineAnimationPercent,
+      (min(center.dx, center.dy) * chartRadiusFactor),
+    );
+    RadarChartDrawUtils.drawGraphData(
+      canvas,
+      valuePoints,
+      fillColor,
+      strokeColor,
+    );
     RadarChartDrawUtils.drawLabels(
-        canvas,
-        center,
-        labels ?? values.map((v) => v.toString()).toList(),
-        outerPoints,
-        CommonPaintUtils.getTextSize(size, textScaleFactor),
-        labelWidth ??
-            CommonPaintUtils.getDefaultLabelWidth(size, center, angle),
-        maxLinesForLabels ?? CommonPaintUtils.getDefaultMaxLinesForLabels(size),
-        labelColor);
+      canvas,
+      center,
+      labels ?? List.empty(),
+      outerPoints,
+      CommonPaintUtils.getTextSize(
+        size,
+        textScaleFactor,
+      ),
+      labelWidth ?? CommonPaintUtils.getDefaultLabelWidth(size, center, angle),
+      maxLinesForLabels ?? CommonPaintUtils.getDefaultMaxLinesForLabels(size),
+    );
   }
 
   @override

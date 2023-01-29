@@ -54,7 +54,7 @@ class RadarChart extends StatefulWidget {
   ///
   /// If not provided, it will default to the value of data points.
   /// If provided, it's length should be same as that of values
-  final List<String>? labels;
+  final List<Text>? labels;
 
   /// Defines the scale of the graph
   ///
@@ -199,21 +199,12 @@ class _RadarChartState extends State<RadarChart> with TickerProviderStateMixin {
     if (widget.values.length < 3) {
       throw ArgumentError("Minimum 3 values are required for Radar chart");
     }
-    if (widget.labels != null &&
-        widget.values.length != widget.labels!.length) {
+    if (widget.labels != null && widget.values.length != widget.labels!.length) {
       throw ArgumentError("values and labels should have same size");
     }
-    _dataAnimationController = AnimationController(
-        vsync: this,
-        duration: widget.animate
-            ? widget.animationDuration
-            : Duration(milliseconds: 1))
-      ..forward();
-    _outlineAnimationController = AnimationController(
-        vsync: this, duration: Duration(milliseconds: widget.animate ? 500 : 1))
-      ..forward();
-    curve =
-        CurvedAnimation(parent: _dataAnimationController, curve: widget.curve);
+    _dataAnimationController = AnimationController(vsync: this, duration: widget.animate ? widget.animationDuration : Duration(milliseconds: 1))..forward();
+    _outlineAnimationController = AnimationController(vsync: this, duration: Duration(milliseconds: widget.animate ? 500 : 1))..forward();
+    curve = CurvedAnimation(parent: _dataAnimationController, curve: widget.curve);
   }
 
   @override
@@ -232,8 +223,7 @@ class _RadarChartState extends State<RadarChart> with TickerProviderStateMixin {
       throw ArgumentError("All values of graph should be less than maxValue");
     } else if (widget.values.length < 3) {
       throw ArgumentError("Minimum 3 values are required for Radar chart");
-    } else if (widget.labels != null &&
-        widget.values.length != widget.labels!.length) {
+    } else if (widget.labels != null && widget.values.length != widget.labels!.length) {
       throw ArgumentError("values and labels should have same size");
     } else if (widget.animate) {
       if (oldWidget.animationDuration != widget.animationDuration) {
@@ -241,8 +231,7 @@ class _RadarChartState extends State<RadarChart> with TickerProviderStateMixin {
         _outlineAnimationController.duration = Duration(milliseconds: 500);
       }
       if (oldWidget.curve != widget.curve) {
-        curve = CurvedAnimation(
-            parent: _dataAnimationController, curve: widget.curve);
+        curve = CurvedAnimation(parent: _dataAnimationController, curve: widget.curve);
       }
       setState(() {
         _dataAnimationController
@@ -257,37 +246,35 @@ class _RadarChartState extends State<RadarChart> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    _dataAnimation =
-        Tween(begin: 0.0, end: 1.0).animate(curve as Animation<double>)
-          ..addListener(() {
-            setState(() {
-              dataAnimationPercent = _dataAnimation.value;
-            });
-          });
-    _outlineAnimation =
-        Tween(begin: 0.0, end: 1.0).animate(_outlineAnimationController)
-          ..addListener(() {
-            setState(() {
-              outlineAnimationPercent = _outlineAnimation.value;
-            });
-          });
+    _dataAnimation = Tween(begin: 0.0, end: 1.0).animate(curve as Animation<double>)
+      ..addListener(() {
+        setState(() {
+          dataAnimationPercent = _dataAnimation.value;
+        });
+      });
+    _outlineAnimation = Tween(begin: 0.0, end: 1.0).animate(_outlineAnimationController)
+      ..addListener(() {
+        setState(() {
+          outlineAnimationPercent = _outlineAnimation.value;
+        });
+      });
     return LimitedBox(
       maxWidth: widget.maxWidth,
       maxHeight: widget.maxHeight,
       child: CustomPaint(
         painter: RadarChartPainter(
-            widget.values,
-            widget.labels,
-            widget.maxValue,
-            widget.fillColor,
-            widget.strokeColor,
-            widget.labelColor,
-            widget.textScaleFactor,
-            widget.labelWidth,
-            widget.maxLinesForLabels,
-            widget.animate ? dataAnimationPercent : 1.0,
-            widget.animate ? outlineAnimationPercent : 1.0,
-            widget.chartRadiusFactor),
+          widget.values,
+          widget.labels,
+          widget.maxValue,
+          widget.fillColor,
+          widget.strokeColor,
+          widget.textScaleFactor,
+          widget.labelWidth,
+          widget.maxLinesForLabels,
+          widget.animate ? dataAnimationPercent : 1.0,
+          widget.animate ? outlineAnimationPercent : 1.0,
+          widget.chartRadiusFactor,
+        ),
         size: widget.size,
       ),
     );
