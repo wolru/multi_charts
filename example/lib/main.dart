@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
             color: Colors.amber,
             //Radar Chart
             child: RadarChart(
-              values: [1, 2, 4, 7, 9, 0, 6],
+              values: [1, 2, 4, 10, 9, 0, 6],
               labels: [
                 Text(
                   '1',
