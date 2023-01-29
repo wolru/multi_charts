@@ -17,8 +17,8 @@ class MyApp extends StatelessWidget {
         ),
         body: Column(children: [
           Container(
-            width: 450,
-            height: 450,
+            width: 360,
+            height: 360,
             color: Colors.amber,
             //Radar Chart
             child: RadarChart(
