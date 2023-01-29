@@ -79,7 +79,6 @@ class RadarChartDrawUtils {
       boundaryPoints.add(boundaryPoints[0]);
       canvas.drawPoints(PointMode.polygon, boundaryPoints, CommonPaintUtils.getStrokePaint(strokeColor, i == 0 ? 75 : 25, 1));
     }
-    canvas.drawCircle(center, 2.0, CommonPaintUtils.getFillPaint(strokeColor, alpha: 50));
     return outerPoints;
   }
 

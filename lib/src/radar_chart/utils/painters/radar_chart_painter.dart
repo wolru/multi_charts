@@ -41,10 +41,15 @@ class RadarChartPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     Offset center = Offset(size.width / 2.0, size.height / 2.0);
-    double angle = (2 * pi) / values.length;
+    final maxValueSize = min(center.dx, center.dy) * chartRadiusFactor;
+    final angle = (2 * pi) / values.length;
+    if (values.length.isOdd) {
+      final adjustPositionY = maxValueSize - sin(pi / 2 - angle / 2) * maxValueSize;
+      center = Offset(size.width / 2.0, size.height / 2.0 + adjustPositionY / 2);
+    }
     var valuePoints = <Offset>[];
     for (var i = 0; i < values.length; i++) {
-      var radius = (values[i] / maxValue) * (min(center.dx, center.dy) * chartRadiusFactor);
+      var radius = (values[i] / maxValue) * maxValueSize;
       var x = dataAnimationPercent * radius * cos(angle * i - pi / 2);
       var y = dataAnimationPercent * radius * sin(angle * i - pi / 2);
 
