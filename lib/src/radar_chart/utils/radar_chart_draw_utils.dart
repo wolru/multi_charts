@@ -58,7 +58,6 @@ class RadarChartDrawUtils {
     Color strokeColor,
     double maxValue,
     int noOfPoints,
-    double animationPercent,
     double chartRadius,
   ) {
     var boundaryPoints = <Offset>[];
@@ -66,8 +65,8 @@ class RadarChartDrawUtils {
     for (var i = 0; i < maxValue; i += maxValue ~/ 5) {
       boundaryPoints.clear();
       for (var j = 0; j < noOfPoints; j++) {
-        var x = animationPercent * chartRadius * cos(angle * j - pi / 2);
-        var y = animationPercent * chartRadius * sin(angle * j - pi / 2);
+        var x = chartRadius * cos(angle * j - pi / 2);
+        var y = chartRadius * sin(angle * j - pi / 2);
         x -= x * i / maxValue;
         y -= y * i / maxValue;
         boundaryPoints.add(Offset(x, y) + center);

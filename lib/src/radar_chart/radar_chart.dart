@@ -184,8 +184,6 @@ class RadarChart extends StatefulWidget {
 class _RadarChartState extends State<RadarChart> with TickerProviderStateMixin {
   late AnimationController _dataAnimationController;
   late Animation<double> _dataAnimation;
-  late AnimationController _outlineAnimationController;
-  late Animation<double> _outlineAnimation;
   double dataAnimationPercent = 0;
   double outlineAnimationPercent = 0;
   late Animation curve;
@@ -203,14 +201,12 @@ class _RadarChartState extends State<RadarChart> with TickerProviderStateMixin {
       throw ArgumentError("values and labels should have same size");
     }
     _dataAnimationController = AnimationController(vsync: this, duration: widget.animate ? widget.animationDuration : Duration(milliseconds: 1))..forward();
-    _outlineAnimationController = AnimationController(vsync: this, duration: Duration(milliseconds: widget.animate ? 500 : 1))..forward();
     curve = CurvedAnimation(parent: _dataAnimationController, curve: widget.curve);
   }
 
   @override
   void dispose() {
     _dataAnimationController.dispose();
-    _outlineAnimationController.dispose();
     super.dispose();
   }
 
@@ -219,7 +215,6 @@ class _RadarChartState extends State<RadarChart> with TickerProviderStateMixin {
     super.didUpdateWidget(oldWidget);
     if (widget.values.any((value) => value > widget.maxValue)) {
       _dataAnimationController.reset();
-      _outlineAnimationController.reset();
       throw ArgumentError("All values of graph should be less than maxValue");
     } else if (widget.values.length < 3) {
       throw ArgumentError("Minimum 3 values are required for Radar chart");
@@ -228,16 +223,12 @@ class _RadarChartState extends State<RadarChart> with TickerProviderStateMixin {
     } else if (widget.animate) {
       if (oldWidget.animationDuration != widget.animationDuration) {
         _dataAnimationController.duration = widget.animationDuration;
-        _outlineAnimationController.duration = Duration(milliseconds: 500);
       }
       if (oldWidget.curve != widget.curve) {
         curve = CurvedAnimation(parent: _dataAnimationController, curve: widget.curve);
       }
       setState(() {
         _dataAnimationController
-          ..reset()
-          ..forward();
-        _outlineAnimationController
           ..reset()
           ..forward();
       });
@@ -250,12 +241,6 @@ class _RadarChartState extends State<RadarChart> with TickerProviderStateMixin {
       ..addListener(() {
         setState(() {
           dataAnimationPercent = _dataAnimation.value;
-        });
-      });
-    _outlineAnimation = Tween(begin: 0.0, end: 1.0).animate(_outlineAnimationController)
-      ..addListener(() {
-        setState(() {
-          outlineAnimationPercent = _outlineAnimation.value;
         });
       });
     return LimitedBox(
@@ -272,7 +257,6 @@ class _RadarChartState extends State<RadarChart> with TickerProviderStateMixin {
           widget.labelWidth,
           widget.maxLinesForLabels,
           widget.animate ? dataAnimationPercent : 1.0,
-          widget.animate ? outlineAnimationPercent : 1.0,
           widget.chartRadiusFactor,
         ),
         size: widget.size,

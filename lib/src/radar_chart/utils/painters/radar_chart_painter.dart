@@ -21,7 +21,6 @@ class RadarChartPainter extends CustomPainter {
   final double? labelWidth;
   final int? maxLinesForLabels;
   final double dataAnimationPercent;
-  final double outlineAnimationPercent;
   final double chartRadiusFactor;
 
   RadarChartPainter(
@@ -34,7 +33,6 @@ class RadarChartPainter extends CustomPainter {
     this.labelWidth,
     this.maxLinesForLabels,
     this.dataAnimationPercent,
-    this.outlineAnimationPercent,
     this.chartRadiusFactor,
   );
 
@@ -63,7 +61,6 @@ class RadarChartPainter extends CustomPainter {
       strokeColor,
       maxValue,
       values.length,
-      outlineAnimationPercent,
       (min(center.dx, center.dy) * chartRadiusFactor),
     );
     RadarChartDrawUtils.drawGraphData(
