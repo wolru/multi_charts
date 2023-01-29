@@ -274,24 +274,21 @@ class _RadarChartState extends State<RadarChart> with TickerProviderStateMixin {
     return LimitedBox(
       maxWidth: widget.maxWidth,
       maxHeight: widget.maxHeight,
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: CustomPaint(
-          painter: RadarChartPainter(
-              widget.values,
-              widget.labels,
-              widget.maxValue,
-              widget.fillColor,
-              widget.strokeColor,
-              widget.labelColor,
-              widget.textScaleFactor,
-              widget.labelWidth,
-              widget.maxLinesForLabels,
-              widget.animate ? dataAnimationPercent : 1.0,
-              widget.animate ? outlineAnimationPercent : 1.0,
-              widget.chartRadiusFactor),
-          size: widget.size,
-        ),
+      child: CustomPaint(
+        painter: RadarChartPainter(
+            widget.values,
+            widget.labels,
+            widget.maxValue,
+            widget.fillColor,
+            widget.strokeColor,
+            widget.labelColor,
+            widget.textScaleFactor,
+            widget.labelWidth,
+            widget.maxLinesForLabels,
+            widget.animate ? dataAnimationPercent : 1.0,
+            widget.animate ? outlineAnimationPercent : 1.0,
+            widget.chartRadiusFactor),
+        size: widget.size,
       ),
     );
   }
